@@ -31,3 +31,33 @@ Output: 18
 1. 1 <= points.length <= 1000
 2. -10^6 <= xi, yi <= 10^6
 3. All pairs (xi, yi) are distinct.
+
+# Implementation : Prim's Algorithm 
+```java
+class Solution {
+    public int minCostConnectPoints(int[][] points) {
+        int nodes = points.length;
+        PriorityQueue<int[]> queue = new PriorityQueue<>((v1, v2) -> v1[1] - v2[1]);
+        queue.add(new int[]{0,0});
+        Set<Integer> visited = new HashSet<>();
+        int minCost = 0;
+        while(!queue.isEmpty()) {
+            int[] node = queue.remove();
+            if(visited.contains(node[0]))
+              continue;
+            visited.add(node[0]);
+            minCost += node[1];
+            for(int point = 0; point < nodes; point++) {
+                if(!visited.contains(point)) {
+                    int[] p1 = points[node[0]];
+                    int[] p2 = points[point];
+                    int distance = Math.abs(p1[0] - p2[0]) + Math.abs(p1[1] - p2[1]);
+                    queue.add(new int[]{point, distance});
+                }
+            }
+
+        }
+        return minCost;
+    }
+}
+```
